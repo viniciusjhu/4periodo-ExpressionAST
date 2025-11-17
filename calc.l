@@ -1,0 +1,28 @@
+%{
+    #include "tree.c" // rotinas de árvore
+    #define YYSTYPE ptno // valores associados aos simbolos, são do tipo ponteiro
+    #include "sintatico.h"
+    #include <stdlib.h>
+    #include <stdio.h>
+    void yyerror(char *);
+%}
+
+%%
+
+"-"     {return T_MENOS;}
+"+"     {return T_MAIS;}
+"*"     {return T_MULT;}
+"/"     {return T_DIV;}
+"("     {return T_ABRE;}
+")"     {return T_FECHA;}
+"\n"    {return T_ENTER;}
+[0-9]+  {
+            yylval = criaNo('n', atoi(yytext));
+            return T_NUM;
+        }        
+[ \t]   /* faz nada */
+.       yyerror("Erro léxico - símbolo desconhecido");
+
+%%
+
+int yywrap (void) {return 1;}
